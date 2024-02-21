@@ -30,7 +30,7 @@ public class FrontEnd extends JFrame {
 
     public FrontEnd() {
         setTitle("Image Converter");
-        setSize(1000, 450);
+        setSize(1000, 480);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Установка положения окна по центру экрана
@@ -42,17 +42,30 @@ public class FrontEnd extends JFrame {
         // Основная панель с разделителем
         JSplitPane mainSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         mainSplitPane.setResizeWeight(0.2);
+        //mainSplitPane.setDividerSize(0); // Зробити роздільник статичним
 
         // Левая часть: разделена на верхнюю часть с логотипом и нижнюю часть с кнопками конвертации
         JSplitPane leftSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        leftSplitPane.setResizeWeight(0.7);
+        leftSplitPane.setResizeWeight(0.01);
+        //??leftSplitPane.setDividerSize(0);
 
-        // Верхняя часть левой части: панель с логотипом
-        JPanel topPanel = new JPanel(new BorderLayout());
+        // Додавання значка програми
+        ImageIcon appIcon = new ImageIcon("icon.png"); // Шлях до значка програми
+        setIconImage(appIcon.getImage());
+
+        // Верхня часть левой части: панель с логотипом
+        JPanel topPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints logoConstraints = new GridBagConstraints();
+        logoConstraints.gridx = 0;
+        logoConstraints.gridy = 0;
+        logoConstraints.fill = GridBagConstraints.HORIZONTAL;
+        logoConstraints.insets = new Insets(5, 5, 5, 5); // Встановлюємо відступи між елементами
+
         logoLabel = new JLabel();
-        ImageIcon logoIcon = new ImageIcon("logo.png"); // Путь к логотипу
+        ImageIcon logoIcon = new ImageIcon("logo.png"); // Шлях до логотипу
         logoLabel.setIcon(logoIcon);
-        topPanel.add(logoLabel, BorderLayout.CENTER);
+
+        topPanel.add(logoLabel, logoConstraints);
         leftSplitPane.setTopComponent(topPanel);
 
         // Нижняя часть левой части: панель с полями X и Y и кнопками конвертации
@@ -112,9 +125,9 @@ public class FrontEnd extends JFrame {
         // Правая часть: разделена на верхнюю часть с полем Drag&Drop и нижнюю часть с кнопкой "Convert" и прогресс-баром
         JSplitPane rightSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         rightSplitPane.setResizeWeight(0.8);
-
+        rightSplitPane.setDividerSize(0);
         JPanel dropPanelRight = new JPanel(new BorderLayout());
-        imageLabel = new JLabel("Перетащите файл", SwingConstants.CENTER);
+        imageLabel = new JLabel("Перемістіть файл", SwingConstants.CENTER);
         imageLabel.setTransferHandler(new TransferHandler() {
             @Override
             public boolean canImport(TransferHandler.TransferSupport support) {
@@ -147,7 +160,7 @@ public class FrontEnd extends JFrame {
 
         JPanel convertPanel = new JPanel(new BorderLayout());
         convertPanel.setBorder(BorderFactory.createEmptyBorder(25, 5, 25, 5));
-        JButton convertButton = new JButton("Convert");
+        JButton convertButton = new JButton("Конвертувати");
         convertButton.setPreferredSize(new Dimension(100, 40));
         convertPanel.add(convertButton, BorderLayout.CENTER);
 
@@ -184,7 +197,7 @@ public class FrontEnd extends JFrame {
                         }
                     }).start();
                 } else {
-                    JOptionPane.showMessageDialog(null, "Перетащите изображение для конвертации", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Перетягніть зображення для конвертації", "Помилка", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -210,7 +223,7 @@ public class FrontEnd extends JFrame {
             imageLabel.setText(null);
         } catch (IOException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Не удалось загрузить изображение", "Ошибка", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Неможливо завантажити зображення", "Помилка", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -248,10 +261,10 @@ public class FrontEnd extends JFrame {
                     ImageIO.write(convertedImage, lastFormat, outputFile);
                 }
 
-                JOptionPane.showMessageDialog(null, "Файл успешно сконвертирован и сохранен в " + outputFile.getAbsolutePath(), "Успех", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Файл успішно конвертований та збережений у " + outputFile.getAbsolutePath(), "Успіх", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException | DocumentException ex) {
                 ex.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Не удалось сконвертировать файл", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Неможливо конвертувати файл", "Помилка", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
