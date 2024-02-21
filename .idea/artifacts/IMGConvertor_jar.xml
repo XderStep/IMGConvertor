@@ -1,9 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="IMGConvertor:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/IMGConvertor_jar</output-path>
-    <root id="archive" name="IMGConvertor.jar">
-      <element id="module-output" name="IMGConvertor" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/itextpdf/itextpdf/5.5.13/itextpdf-5.5.13.jar" path-in-jar="/" />
-    </root>
-  </artifact>
-</component>
